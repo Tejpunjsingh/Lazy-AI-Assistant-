@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#10151f">
+  <meta name="description" content="LazyDesk AI — a calmer, local-first workspace for tasks, notes, and focused work.">
+  <title>LazyDesk AI — Do less busywork</title>
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="#" aria-label="LazyDesk home">
+        <span class="brand-mark">z<span>z</span></span>
+        <span><b>LazyDesk</b><small>YOUR QUIET WORKSPACE</small></span>
+      </a>
+      <div class="workspace-label">WORKSPACE</div>
+      <nav class="nav">
+        <button class="nav-item active" data-view="home"><span>⌂</span> Overview</button>
+        <button class="nav-item" data-view="tasks"><span>☷</span> My tasks <em id="taskNavCount">0</em></button>
+        <button class="nav-item" data-view="notes"><span>▤</span> Quick notes</button>
+        <button class="nav-item" data-view="assistant"><span>✳</span> AI assistant <i class="local-dot"></i></button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="privacy-card">
+          <div class="privacy-icon">⌁</div>
+          <b>Your data stays yours.</b>
+          <p>Tasks and notes stay in this browser. AI requests go only to your local Ollama instance.</p>
+          <span class="privacy-status"><i></i> LOCAL-FIRST BY DESIGN</span>
+        </div>
+        <button class="settings-link" id="settingsBtn">⚙ &nbsp; Settings & connection</button>
+        <div class="profile"><div class="avatar">S</div><div><b>Slow mode</b><small>One thing at a time</small></div><span class="online"></span></div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="mobile-brand">zz <b>LazyDesk</b></div>
+        <div class="breadcrumb">Workspace <span>/</span> <b id="breadcrumbName">Overview</b></div>
+        <div class="top-actions">
+          <div class="connection-pill"><i id="connectionDot"></i><span id="connectionText">Checking local AI…</span></div>
+          <button class="icon-btn" id="themeBtn" title="Toggle theme" aria-label="Toggle theme">◐</button>
+          <button class="avatar small-avatar" title="Local workspace">S</button>
+        </div>
+      </header>
+
+      <section class="view active" id="view-home">
+        <div class="welcome-row">
+          <div>
+            <div class="eyebrow"><span class="sparkle">✳</span> TUESDAY, OCTOBER 20 <span class="eyebrow-line"></span> TAKE IT SLOW</div>
+            <h1>Make room for <span class="gradient-text">less busywork.</span></h1>
+            <p class="subhead">A little progress is still progress. Let’s make today feel lighter.</p>
+          </div>
+          <div class="slow-badge"><span>☁</span><div><b>Slow & steady</b><small>is a superpower</small></div></div>
+        </div>
+
+        <div class="hero-card">
+          <div class="hero-copy">
+            <div class="hero-tag"><span>✦</span> YOUR DAILY RESET</div>
+            <h2>What would make<br>today feel <i>lighter?</i></h2>
+            <p>Pick one small thing. We’ll help you get it out of your head and onto the page.</p>
+            <button class="primary-btn" id="heroAddTask">＋ Add a small task <span>→</span></button>
+          </div>
+          <div class="hero-art" aria-hidden="true">
+            <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+            <div class="moon"></div><div class="star star-a">✦</div><div class="star star-b">✧</div><div class="star star-c">·</div>
+            <div class="sloth-card"><div class="sloth-face"><span class="sloth-eye left"></span><span class="sloth-eye right"></span><span class="sloth-nose"></span></div><div class="sloth-body"></div><span class="zzz">z z z</span></div>
+            <div class="art-caption">NO RUSH. YOU'RE RIGHT ON TIME.</div>
+          </div>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card"><div class="stat-top"><span>Tasks in your queue</span><span class="stat-icon purple">☷</span></div><div class="stat-number" id="statTasks">0</div><div class="stat-foot"><span class="mini-dot purple-dot"></span> Small steps count</div></div>
+          <div class="stat-card"><div class="stat-top"><span>Completed today</span><span class="stat-icon green">✓</span></div><div class="stat-number" id="statDone">0</div><div class="stat-foot"><span class="mini-dot green-dot"></span> Look at you go</div></div>
+          <div class="stat-card"><div class="stat-top"><span>Notes captured</span><span class="stat-icon orange">✎</span></div><div class="stat-number" id="statNotes">0</div><div class="stat-foot"><span class="mini-dot orange-dot"></span> Out of your head</div></div>
+          <div class="stat-card"><div class="stat-top"><span>Focus minutes</span><span class="stat-icon blue">◷</span></div><div class="stat-number" id="statFocus">0</div><div class="stat-foot"><span class="mini-dot blue-dot"></span> At your own pace</div></div>
+        </div>
+
+        <div class="content-grid">
+          <div class="panel tasks-panel">
+            <div class="panel-heading"><div><h3>Today's gentle plan</h3><p>Keep it simple. Keep it kind.</p></div><button class="text-btn" data-goto="tasks">View all <span>→</span></button></div>
+            <div id="homeTaskList" class="task-list"></div>
+            <button class="add-inline" id="inlineAddTask">＋ Add another task</button>
+          </div>
+          <div class="panel focus-panel">
+            <div class="panel-heading"><div><h3>Little focus session</h3><p>One thing at a time.</p></div><span class="focus-label">DEEP BREATH</span></div>
+            <div class="timer-wrap">
+              <svg class="timer-ring" viewBox="0 0 180 180" aria-label="Focus timer"><circle class="ring-bg" cx="90" cy="90" r="78"/><circle id="timerProgress" class="ring-progress" cx="90" cy="90" r="78"/></svg>
+              <div class="timer-center"><strong id="timerDisplay">15:00</strong><span id="timerState">READY WHEN YOU ARE</span></div>
+            </div>
+            <div class="timer-presets"><button data-minutes="5">5 min</button><button class="selected" data-minutes="15">15 min</button><button data-minutes="25">25 min</button></div>
+            <div class="timer-controls"><button class="primary-btn" id="timerStart">Start focus <span>▶</span></button><button class="reset-btn" id="timerReset" title="Reset timer">↻</button></div>
+            <p class="timer-note">No pressure. You can pause whenever you need.</p>
+          </div>
+        </div>
+        <div class="bottom-quote"><span>✳</span> “Almost everything will work again if you unplug it for a few minutes, including you.” <b>— Anne Lamott</b></div>
+      </section>
+
+      <section class="view" id="view-tasks">
+        <div class="page-heading"><div><div class="eyebrow">MAKE IT MANAGEABLE</div><h1>My <span class="gradient-text">tasks.</span></h1><p class="subhead">Small, clear steps beat one giant to-do list.</p></div><button class="primary-btn" id="tasksAddBtn">＋ New task</button></div>
+        <div class="panel">
+          <div class="task-toolbar"><div class="filter-tabs"><button class="filter-tab active" data-filter="all">All tasks</button><button class="filter-tab" data-filter="open">To do</button><button class="filter-tab" data-filter="done">Completed</button></div><input id="taskSearch" class="search-input" placeholder="⌕  Search tasks…" aria-label="Search tasks"></div>
+          <div id="allTaskList" class="task-list large-list"></div>
+          <div id="emptyTasks" class="empty-state hidden"><div>☁</div><h3>Nothing weighing you down.</h3><p>Add a task when you're ready. No rush.</p></div>
+        </div>
+      </section>
+
+      <section class="view" id="view-notes">
+        <div class="page-heading"><div><div class="eyebrow">GET IT OUT OF YOUR HEAD</div><h1>Quick <span class="gradient-text">notes.</span></h1><p class="subhead">Capture it now. Sort it out later.</p></div><button class="primary-btn" id="newNoteBtn">＋ New note</button></div>
+        <div class="notes-layout"><div class="notes-list-panel panel"><div class="notes-list-heading"><h3>Your notebook</h3><span id="noteCountLabel">0 notes</span></div><div id="notesList"></div></div>
+          <div class="note-editor panel"><div class="editor-top"><span id="noteEditorLabel">NEW NOTE</span><button class="text-btn danger-text" id="deleteNoteBtn">Delete note</button></div><input id="noteTitle" placeholder="Give this note a title…" maxlength="100"><textarea id="noteBody" placeholder="Start with a thought, a list, or a half-formed idea…"></textarea><div class="editor-bottom"><span id="noteSavedLabel">Saved locally in this browser</span><button class="primary-btn" id="saveNoteBtn">Save note <span>✓</span></button></div></div>
+        </div>
+      </section>
+
+      <section class="view" id="view-assistant">
+        <div class="page-heading"><div><div class="eyebrow">YOUR LOCAL THINKING BUDDY</div><h1>AI <span class="gradient-text">assistant.</span></h1><p class="subhead">Turn the messy stuff into a manageable next step.</p></div><span class="local-only-badge"><i></i> LOCAL MODEL READY? <b id="assistantStatus">CHECKING</b></span></div>
+        <div class="assistant-layout">
+          <div class="panel chat-panel"><div class="chat-header"><div class="assistant-avatar">✳</div><div><b>LazyDesk helper</b><small><i></i> Runs on your machine when Ollama is connected</small></div><button id="clearChatBtn" class="text-btn">Clear chat</button></div>
+            <div class="chat-messages" id="chatMessages"><div class="message assistant-message"><div class="message-avatar">✳</div><div class="bubble"><b>Hey, take a breath.</b><p>Tell me what feels overwhelming. I can help break it into small steps, summarize notes, or draft a plan. Your messages are sent only to the local AI server you run.</p><div class="suggestions"><button data-prompt="Help me plan a calm, realistic day.">Plan my day</button><button data-prompt="Break a big task into tiny steps.">Break down a task</button><button data-prompt="Give me a short summary of this text: ">Summarize text</button></div></div></div></div>
+            <form id="chatForm" class="chat-input-wrap"><textarea id="chatInput" rows="1" placeholder="Ask for a little help…" aria-label="Message the assistant"></textarea><button class="send-btn" type="submit" aria-label="Send message">↑</button><div class="chat-disclaimer">Local model responses can be wrong. Check important details.</div></form>
+          </div>
+          <div class="assistant-side"><div class="panel quick-actions"><h3>Quick relief</h3><p>One click to get started.</p><button data-prompt="Help me prioritize these tasks and choose just one to start with: "><span class="quick-icon lavender">↗</span><span><b>Find my next step</b><small>Choose one thing to focus on</small></span><span class="quick-arrow">→</span></button><button data-prompt="Turn this brain dump into a clear checklist: "><span class="quick-icon mint">☷</span><span><b>Untangle my brain dump</b><small>Make a simple checklist</small></span><span class="quick-arrow">→</span></button><button data-prompt="Rewrite this message so it's clear and friendly: "><span class="quick-icon peach">✎</span><span><b>Polish a message</b><small>Clear, friendly, less effort</small></span><span class="quick-arrow">→</span></button></div>
+            <div class="panel model-card"><div class="model-card-top"><span class="model-symbol">◈</span><span class="local-tag">ON DEVICE</span></div><h3>Open model. Your rules.</h3><p>Connect Ollama and choose an open-weight model. No hosted AI account required.</p><div class="model-detail"><span>Provider</span><b>Ollama · localhost</b></div><div class="model-detail"><span>Model</span><b id="modelName">Not connected</b></div><button class="outline-btn" id="openSettingsBtn">Configure local AI ↗</button></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="view" id="view-settings">
+        <div class="page-heading"><div><div class="eyebrow">YOUR WORKSPACE, YOUR RULES</div><h1>Settings & <span class="gradient-text">privacy.</span></h1><p class="subhead">Keep the setup simple and the data close.</p></div></div>
+        <div class="settings-grid">
+          <div class="panel settings-card"><div class="settings-title"><span class="setting-icon">◈</span><div><h3>Local AI connection</h3><p>Optional · powered by Ollama</p></div></div><div class="setting-row"><div><b>Connection status</b><small>Checks your local LazyDesk server and Ollama</small></div><span class="status-chip" id="settingsConnection">Checking…</span></div><div class="setting-row"><div><b>Available model</b><small>Model installed on this computer</small></div><b id="settingsModel">—</b></div><div class="setting-row"><div><b>Model selection</b><small>Use a model name shown by Ollama, e.g. llama3.2</small></div><input id="modelInput" class="setting-input" value="llama3.2" aria-label="Ollama model name"></div><button class="primary-btn" id="saveModelBtn">Save model preference</button><p class="small-help">The model must already be downloaded in Ollama. LazyDesk does not download models or send prompts to a cloud service.</p></div>
+          <div class="panel settings-card"><div class="settings-title"><span class="setting-icon green-setting">⌂</span><div><h3>Local data</h3><p>Stored in this browser on this computer</p></div></div><div class="setting-row"><div><b>Tasks, notes & preferences</b><small>Saved using browser local storage</small></div><span class="status-chip positive">LOCAL ONLY</span></div><div class="setting-row"><div><b>Export your workspace</b><small>Download a backup as a JSON file</small></div><button class="outline-btn compact" id="exportBtn">Export data ↓</button></div><div class="setting-row"><div><b>Import workspace</b><small>Restore a previous LazyDesk JSON backup</small></div><label class="outline-btn compact file-label">Choose file<input id="importFile" type="file" accept=".json,application/json" hidden></label></div><div class="setting-row"><div><b>Clear all local data</b><small>This cannot be undone</small></div><button class="outline-btn compact danger-outline" id="clearDataBtn">Clear data</button></div></div>
+          <div class="panel settings-card full-settings"><div class="settings-title"><span class="setting-icon">ⓘ</span><div><h3>What “offline” means here</h3><p>Honest by design</p></div></div><div class="offline-explainer"><p><b>Works locally:</b> tasks, notes, the focus timer, saved preferences, and the basic interface use files served from your own computer and browser storage. Once the project files are on your computer, core features need no internet.</p><p><b>AI needs a local model:</b> the assistant sends prompts to the local server at <code>127.0.0.1</code>, which calls Ollama on your machine. Downloading Ollama and a model requires internet the first time. Afterward, inference can run offline if the model is installed.</p><p><b>Open-source note:</b> LazyDesk's code is provided under the MIT License. Ollama is an open-source local model runner; model licenses vary, so check the license of the specific model you download. No external analytics or cloud AI API is built in.</p></div></div>
+        </div>
+      </section>
+      <footer class="footer"><span>zz LazyDesk AI</span><span>Built for slower days · <a href="https://dev.to" target="_blank" rel="noreferrer">Slow & Steady</a></span></footer>
+    </main>
+  </div>
+
+  <dialog id="taskDialog" class="modal"><form id="taskForm" method="dialog"><div class="modal-head"><div><div class="eyebrow">ONE SMALL STEP</div><h2 id="taskDialogTitle">Add a task</h2></div><button type="button" class="modal-close" data-close="taskDialog">×</button></div><label for="taskTitle">Task name</label><input id="taskTitle" maxlength="140" required placeholder="e.g. Reply to that email"><label for="taskCategory">Keep it in a lane</label><select id="taskCategory"><option>Personal</option><option>Work</option><option>Study</option><option>Life admin</option></select><label for="taskPriority">Energy level</label><select id="taskPriority"><option value="gentle">Gentle · quick win</option><option value="normal">Steady · needs focus</option><option value="deep">Deep work · save energy</option></select><div class="modal-actions"><button type="button" class="outline-btn" data-close="taskDialog">Cancel</button><button class="primary-btn" type="submit">Save task <span>✓</span></button></div></form></dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="/app.js"></script>
+</body>
+</html>

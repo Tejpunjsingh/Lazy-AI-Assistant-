@@ -1,0 +1,9 @@
+{
+  "name": "LazyDesk AI",
+  "short_name": "LazyDesk",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f7f8fc",
+  "theme_color": "#10151f",
+  "description": "A local-first workspace for tasks, notes, and focused work."
+}
